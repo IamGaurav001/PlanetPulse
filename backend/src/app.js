@@ -3,6 +3,8 @@ const cors = require("cors");
 
 const activitiesRouter = require("./routes/activities");
 const footprintRouter = require("./routes/footprint");
+const summaryRouter = require("./routes/summary");
+const targetRouter = require("./routes/target");
 const { ACTIVITY_TYPES } = require("./emissionFactors");
 
 const app = express();
@@ -16,14 +18,8 @@ app.get("/api/activity-types", (req, res) => {
 
 app.use("/api/activities", activitiesRouter);
 app.use("/api/footprint", footprintRouter);
-
-// Stubbed features (not implemented in this build): weekly target & history filtering.
-app.get("/api/target", (req, res) => {
-  res.status(501).json({ error: "not_implemented", message: "Weekly target is not implemented in this build." });
-});
-app.post("/api/target", (req, res) => {
-  res.status(501).json({ error: "not_implemented", message: "Weekly target is not implemented in this build." });
-});
+app.use("/api/summary", summaryRouter);
+app.use("/api/target", targetRouter);
 
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 

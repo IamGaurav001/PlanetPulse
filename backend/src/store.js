@@ -31,4 +31,36 @@ async function getAllActivities() {
   return rows.map(rowToActivity);
 }
 
-module.exports = { insertActivity, getAllActivities };
+/** Filter activities in-memory: dataset is small (hackathon scope), keeps SQL simple/safe. */
+async function getFilteredActivities({ type, from, to } = {}) {
+  const all = await getAllActivities();
+  return all.filter((a) => {
+    if (type && a.type !== type) return false;
+    if (from && a.date < from) return false;
+    if (to && a.date > to) return false;
+    return true;
+  });
+}
+
+async function getWeeklyTargetKg() {
+  await ensureSchema();
+  const rows = await sql`SELECT weekly_target_kg FROM settings WHERE id = 1`;
+  return rows.length ? Number(rows[0].weekly_target_kg) : 50;
+}
+
+async function setWeeklyTargetKg(value) {
+  await ensureSchema();
+  await sql`
+    INSERT INTO settings (id, weekly_target_kg) VALUES (1, ${value})
+    ON CONFLICT (id) DO UPDATE SET weekly_target_kg = EXCLUDED.weekly_target_kg
+  `;
+  return value;
+}
+
+module.exports = {
+  insertActivity,
+  getAllActivities,
+  getFilteredActivities,
+  getWeeklyTargetKg,
+  setWeeklyTargetKg,
+};

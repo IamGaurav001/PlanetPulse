@@ -22,7 +22,20 @@ function ensureSchema() {
         date TEXT NOT NULL,
         created_at TIMESTAMPTZ NOT NULL DEFAULT now()
       )
-    `;
+    `.then(() =>
+      sql`
+        CREATE TABLE IF NOT EXISTS settings (
+          id INT PRIMARY KEY DEFAULT 1,
+          weekly_target_kg NUMERIC NOT NULL DEFAULT 50,
+          CONSTRAINT settings_singleton CHECK (id = 1)
+        )
+      `
+    ).then(() =>
+      sql`
+        INSERT INTO settings (id, weekly_target_kg) VALUES (1, 50)
+        ON CONFLICT (id) DO NOTHING
+      `
+    );
   }
   return schemaReady;
 }

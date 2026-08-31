@@ -1,7 +1,7 @@
 const express = require("express");
 const crypto = require("crypto");
 const { ACTIVITY_TYPES, calculateCo2Kg, isSuspicious } = require("../emissionFactors");
-const { insertActivity, getAllActivities } = require("../store");
+const { insertActivity, getFilteredActivities } = require("../store");
 
 const router = express.Router();
 
@@ -55,11 +55,16 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// GET /api/activities - list all (history & filter is a stubbed feature, so this
-// endpoint intentionally does NOT support query-param filtering yet)
+// GET /api/activities - list all, optionally filtered by ?type=&from=&to=
+// (?limit is accepted and ignored -- this app does not paginate)
 router.get("/", async (req, res, next) => {
   try {
-    const activities = await getAllActivities();
+    const { type, from, to } = req.query;
+    const activities = await getFilteredActivities({
+      type: typeof type === "string" ? type : undefined,
+      from: typeof from === "string" ? from : undefined,
+      to: typeof to === "string" ? to : undefined,
+    });
     res.json({ activities });
   } catch (err) {
     next(err);
