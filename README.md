@@ -1,6 +1,6 @@
 # PlanetPulse
 
-**Hackathon ID: APEX-2026**
+**Hackathon ID: TRUTHLENS-2026**
 
 A carbon footprint tracker — turns daily choices (car trips, flights, electricity use, meals) into a visible CO₂ footprint with a live dashboard.
 
