@@ -19,7 +19,7 @@ function ensureSchema() {
         quantity NUMERIC NOT NULL,
         co2_kg NUMERIC NOT NULL,
         suspicious BOOLEAN NOT NULL,
-        date DATE NOT NULL,
+        date TEXT NOT NULL,
         created_at TIMESTAMPTZ NOT NULL DEFAULT now()
       )
     `;
