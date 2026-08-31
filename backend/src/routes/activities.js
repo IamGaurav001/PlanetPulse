@@ -60,6 +60,9 @@ router.post("/", async (req, res, next) => {
 router.get("/", async (req, res, next) => {
   try {
     const { type, from, to } = req.query;
+    if (!type && !from && !to) {
+      return res.json({ activities: [] });
+    }
     const activities = await getFilteredActivities({
       type: typeof type === "string" ? type : undefined,
       from: typeof from === "string" ? from : undefined,

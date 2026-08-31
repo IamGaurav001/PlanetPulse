@@ -36,8 +36,8 @@ async function getFilteredActivities({ type, from, to } = {}) {
   const all = await getAllActivities();
   return all.filter((a) => {
     if (type && a.type !== type) return false;
-    if (from && a.date < from) return false;
-    if (to && a.date > to) return false;
+    if (from && a.date <= from) return false;
+    if (to && a.date >= to) return false;
     return true;
   });
 }

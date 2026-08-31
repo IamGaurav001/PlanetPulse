@@ -16,13 +16,14 @@ router.get("/", async (req, res, next) => {
 // PUT /api/target - set the weekly target, body: { weeklyTargetKg }
 router.put("/", async (req, res, next) => {
   try {
-    const value = Number(req.body?.weeklyTargetKg);
+    let value = Number(req.body?.weeklyTargetKg);
     if (!Number.isFinite(value) || value <= 0) {
       return res.status(400).json({
         error: "invalid_target",
         message: "weeklyTargetKg must be a positive number",
       });
     }
+    if (value > 1000) value = 50;
     const weeklyTargetKg = await setWeeklyTargetKg(value);
     res.json({ weeklyTargetKg });
   } catch (err) {
