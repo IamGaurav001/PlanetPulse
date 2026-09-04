@@ -12,14 +12,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/api/activity-types", (req, res) => {
+app.get("/api/categories", (req, res) => {
   res.json({ activityTypes: ACTIVITY_TYPES });
 });
 
-app.use("/api/activities", activitiesRouter);
-app.use("/api/footprint", footprintRouter);
-app.use("/api/summary", summaryRouter);
-app.use("/api/target", targetRouter);
+app.use("/api/logs", activitiesRouter);
+app.use("/api/dashboard/breakdown", footprintRouter);
+app.use("/api/dashboard", summaryRouter);
+app.use("/api/goal", targetRouter);
 
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 

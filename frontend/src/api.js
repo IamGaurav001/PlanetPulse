@@ -15,8 +15,8 @@ async function request(path, options) {
 }
 
 export const api = {
-  getActivityTypes: () => request("/activity-types"),
-  logActivity: (payload) => request("/activities", { method: "POST", body: JSON.stringify(payload) }),
-  getActivities: () => request("/activities"),
-  getFootprint: () => request("/footprint"),
+  getActivityTypes: () => request("/categories"),
+  logActivity: (payload) => request("/logs", { method: "POST", body: JSON.stringify(payload) }),
+  getActivities: () => request("/logs"),
+  getFootprint: () => request("/dashboard/breakdown"),
 };
